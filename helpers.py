@@ -1,7 +1,7 @@
 import os
 import shutil
 import subprocess
-import os
+import math
 import json
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
@@ -282,9 +282,13 @@ def plot_param_distributions(
         for idx in range(5):
             print(f"Plotting paramater distributions for {labels[idx]}")
             # fig, axs = plt.subplots(3, 2, figsize=(12, 12))
+            n_params = len(list(perturbed_BL_params.keys()))
+            ncols = 2
+            nrows = math.ceil(n_params / ncols)
             fig, axs = plt.subplots(
-                len(list(perturbed_BL_params.keys())) // 2, 2, figsize=(12, 12)
+                nrows, ncols, figsize=(12, 12)
             )
+            axs = axs.flatten()
             fig.suptitle(
                 f"Distributions of perturbed parameters for {labels[idx]} ({ensemble_name})"
             )
@@ -312,12 +316,10 @@ def plot_param_distributions(
                         )
                         continue
 
-                row = i // 2
-                col = i % 2
-                axs[row, col].hist(values, bins=30, color="skyblue", edgecolor="black")
-                axs[row, col].set_title(f"{key} Distribution")
-                axs[row, col].set_xlabel(f"{key}")
-                axs[row, col].set_ylabel("Frequency")
+                axs[i].hist(values, bins=30, color="skyblue", edgecolor="black")
+                axs[i].set_title(f"{key} Distribution")
+                axs[i].set_xlabel(f"{key}")
+                axs[i].set_ylabel("Frequency")      
 
             plt.tight_layout(rect=[0, 0, 1, 0.96])
 

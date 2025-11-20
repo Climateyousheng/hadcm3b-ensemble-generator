@@ -1,7 +1,8 @@
 import random
 from helpers import create_json_file, plot_param_distributions
 
-ensemble_name = "xqau"
+# ensemble_name = "xqau"
+ensemble_name = 'xqhl'
 
 output_file = f"./param_tables/{ensemble_name}.json"
 pdf_file = f"./param_tables/{ensemble_name}_param_distributions.pdf"
@@ -9,16 +10,29 @@ pdf_file = f"./param_tables/{ensemble_name}_param_distributions.pdf"
 N = 256  # number of perturbed parameter sets to generate
 
 #  default parameter set from “acang” (MetOffice C4MIP run from 2006)
-default_params = {
-    "ALPHA": [0.08, 0.08, 0.08, 0.05, 0.08],
-    "G_AREA": [0.004, 0.004, 0.10, 0.10, 0.05],
-    "LAI_MIN": [4.0, 4.0, 1.0, 1.0, 1.0],
-    "NL0": [0.050, 0.030, 0.060, 0.030, 0.030],
-    "R_GROW": [0.25, 0.25, 0.25, 0.25, 0.25],
-    "TLOW": [0.0, -5.0, 0.0, 13.0, 0.0],
-    "TUPP": [36.0, 31.0, 36.0, 45.0, 36.0],
-    "V_CRIT_ALPHA": [0.343],
-}
+# default_params = {
+#     "ALPHA": [0.08, 0.08, 0.08, 0.05, 0.08],
+#     "G_AREA": [0.004, 0.004, 0.10, 0.10, 0.05],
+#     "LAI_MIN": [4.0, 4.0, 1.0, 1.0, 1.0],
+#     "NL0": [0.050, 0.030, 0.060, 0.030, 0.030],
+#     "R_GROW": [0.25, 0.25, 0.25, 0.25, 0.25],
+#     "TLOW": [0.0, -5.0, 0.0, 13.0, 0.0],
+#     "TUPP": [36.0, 31.0, 36.0, 45.0, 36.0],
+#     "V_CRIT_ALPHA": [0.343],
+# }
+
+# default parameter set from 'xqgtc' (HadCM3BC-ESM run, 2025)
+# default_params = {
+#     "ALPHA": [0.08, 0.08, 0.08, 0.05, 0.08],
+#     "G_AREA": [0.004, 0.004, 0.10, 0.10, 0.05],
+#     # "F0": [0.9327, 0.9327, 0.9327, 0.7896, 0.9327],
+#     "LAI_MIN": [3.954, 3.954, 1.0, 1.0, 1.0],
+#     "NL0": [0.0561, 0.05095, 0.08562, 0.09699, 0.05424],
+#     "R_GROW": [0.1948, 0.1948, 0.1948, 0.1948, 0.1948],
+#     "TLOW": [-4.35, -9.35, -4.35, 8.65, -4.35],
+#     "TUPP": [31.65, 26.65, 31.65, 40.65, 31.65],
+#     "V_CRIT_ALPHA": [0.343],
+# }
 
 # define perturbation ranges for each parameter
 # new parameter sets will generate a random value for each parameter within the defined ranges
