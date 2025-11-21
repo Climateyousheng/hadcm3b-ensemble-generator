@@ -8,7 +8,7 @@ from helpers import setup_logging, duplicate_job, generate_ensemble_jobid
 
 # Setup logging directory
 def setup_logging_directories(home_dir, ensemble_exp):
-    log_dir = os.path.join(home_dir, "hadcm3b-ensemble-generator", "logs")
+    log_dir = os.path.join(home_dir, "scripts", "hadcm3b-ensemble-generator", "logs")
     logger, generated_ids_log_file, generated_params_log_file = setup_logging(
         ensemble_exp, log_dir
     )
