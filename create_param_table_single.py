@@ -1,6 +1,6 @@
 from helpers import create_json_file, plot_param_distributions
 
-ensemble_name = "acang_single_param_tuning"
+ensemble_name = "test_single_param_tuning"
 
 output_file = f"./param_tables/{ensemble_name}.json"
 pdf_file = f"./param_tables/{ensemble_name}_param_distributions.pdf"
