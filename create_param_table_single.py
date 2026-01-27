@@ -17,6 +17,7 @@ pdf_file = f"./param_tables/{ensemble_name}_param_distributions.pdf"
 # }
 
 # default parameter set from 'xqgtc' (HadCM3BC-ESM run, 2025)
+# We don't use these values
 # default_params = {
 #     "F0": [0.9327, 0.9327, 0.9327, 0.7896, 0.9327],
 #     "LAI_MIN": [3.954, 3.954, 1.0, 1.0, 1.0],
