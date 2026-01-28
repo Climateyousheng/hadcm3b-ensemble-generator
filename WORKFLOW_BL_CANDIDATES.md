@@ -253,10 +253,10 @@ LOGFILE="logs/${ENSEMBLE_NAME}_generated_ids_$(date +%Y%m%d).log"
 # Create directories and symlinks
 while IFS= read -r job_id; do
     # Create job directory on BRIDGE partition (large storage)
-    mkdir -p "/mnt/storage/private/bridge/um_output/$USER/$job_id"
+    mkdir -p "/bp1/geog-tropical/users/$USER/DUMP2HOLD/um/$job_id"
 
     # Create symlink in dump2hold (standard I/O location)
-    ln -s "/mnt/storage/private/bridge/um_output/$USER/$job_id" \
+    ln -s "/bp1/geog-tropical/users/$USER/DUMP2HOLD/um/$job_id" \
           "/user/home/$USER/dump2hold/$job_id"
 
     echo "Setup: $job_id"
@@ -369,7 +369,7 @@ cat logs/<ensemble>_updated_parameters_*.json | less
 qstat -u $USER | grep <ensemble> | awk '{print $1}' | xargs qdel
 
 # Check disk usage
-du -sh /mnt/storage/private/bridge/um_output/$USER/<ensemble>*
+du -sh /bp1/geog-tropical/users/$USER/DUMP2HOLD/um/<ensemble>*
 ```
 
 ---

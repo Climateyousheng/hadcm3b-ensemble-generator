@@ -1,10 +1,15 @@
-# create job directories for each ensemble job on larger, private BRIDGE disk 
+# create job directories for each ensemble job on bp14 geog-tropical storage
 # create symlinks in dump2hold for normal model I/O
 user_name=$(whoami)
 while IFS= read -r job_id; do
-    echo "ln -s /mnt/storage/private/bridge/um_output/$user_name/$job_id /user/home/$user_name/dump2hold/$job_id"
-    mkdir -p "/mnt/storage/private/bridge/um_output/$user_name/$job_id"
-    ln -s "/mnt/storage/private/bridge/um_output/$user_name/$job_id" "/user/home/$user_name/dump2hold/$job_id"
+    BRIDGE_DIR="/bp1/geog-tropical/users/$user_name/DUMP2HOLD/um/$job_id"
+    DUMP_LINK="/user/home/$user_name/dump2hold/$job_id"
+
+    echo "Creating: $BRIDGE_DIR"
+    mkdir -p "$BRIDGE_DIR"
+
+    echo "Linking: $DUMP_LINK -> $BRIDGE_DIR"
+    ln -s "$BRIDGE_DIR" "$DUMP_LINK"
 
 # done < logs/xqaRd_generated_ids_20241028.log
 done < logs/xqhL_generated_ids_20251121.log

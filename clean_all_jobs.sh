@@ -1,8 +1,9 @@
-# create job directories for each ensemble job on larger, private BRIDGE disk 
-# create symlinks in dump2hold for normal model I/O
+# Clean up old model output files from bp14 geog-tropical storage
+# Removes intermediate restart files and keeps only recent history
 user_name=$(whoami)
 while IFS= read -r job_id; do
-    cd "/mnt/storage/private/bridge/um_output/$user_name/$job_id/datam"
+    DATAM_DIR="/bp1/geog-tropical/users/$user_name/DUMP2HOLD/um/$job_id/datam"
+    cd "$DATAM_DIR"
     ls *p[abcdf]00*
     rm -f *p[abcdf]00*
     ls -t *da00* | tail -n +21

@@ -81,7 +81,7 @@ echo "Step 3: Setting up storage directories..."
 echo "-----------------------------------"
 
 while IFS= read -r job_id; do
-    BRIDGE_DIR="/mnt/storage/private/bridge/um_output/$USER_NAME/$job_id"
+    BRIDGE_DIR="/bp1/geog-tropical/users/$USER_NAME/DUMP2HOLD/um/$job_id"
     DUMP_LINK="/user/home/$USER_NAME/dump2hold/$job_id"
 
     # Create directory on BRIDGE partition

@@ -48,7 +48,7 @@ This repository contains scripts and workflows to automatically generate ensembl
 
 - Access to PUMA2 (via ARCHER2) for UMUI
 - Access to BC4 cluster
-- BRIDGE storage access (`/mnt/storage/private/bridge`)
+- bp14 geog-tropical storage access (`/bp1/geog-tropical/users`)
 - Python 3.x (available on BC4)
 
 ### Basic Workflow
@@ -413,10 +413,10 @@ LOGFILE="logs/<ensemble_name>_generated_ids_$(date +%Y%m%d).log"
 
 while IFS= read -r job_id; do
     # Create on BRIDGE partition (large storage)
-    mkdir -p "/mnt/storage/private/bridge/um_output/$USER/$job_id"
+    mkdir -p "/bp1/geog-tropical/users/$USER/DUMP2HOLD/um/$job_id"
 
     # Create symlink in dump2hold (standard I/O location)
-    ln -s "/mnt/storage/private/bridge/um_output/$USER/$job_id" \
+    ln -s "/bp1/geog-tropical/users/$USER/DUMP2HOLD/um/$job_id" \
           "/user/home/$USER/dump2hold/$job_id"
 done < "$LOGFILE"
 ```
@@ -602,7 +602,7 @@ hadcm3b-ensemble-generator/
 ├── <ensemble>b/                           # Member 1
 └── ...
 
-/mnt/storage/private/bridge/um_output/$USER/  # Actual job output
+/bp1/geog-tropical/users/$USER/DUMP2HOLD/um/  # Actual job output
 ├── <ensemble>a/
 ├── <ensemble>b/
 └── ...
@@ -654,7 +654,7 @@ ls -la ~/umui_jobs/<JOBID>/
 # 3. Disk quota exceeded
 quota -s
 df -h /user/home/$USER
-df -h /mnt/storage/private/bridge/um_output/$USER
+df -h /bp1/geog-tropical/users/$USER
 ```
 
 ---
@@ -693,7 +693,7 @@ with open('input_params/my_candidates.csv') as f:
 **Solution**:
 ```bash
 # Check access
-ls -la /mnt/storage/private/bridge/um_output/$USER/
+ls -la /bp1/geog-tropical/users/$USER/
 
 # If directory doesn't exist, request access:
 # Email: hpc-help@bristol.ac.uk
@@ -786,10 +786,10 @@ jq 'length' param_tables/<ensemble>.json  # Total members
 
 # Check disk usage
 du -sh ~/umui_jobs/<ensemble>*
-du -sh /mnt/storage/private/bridge/um_output/$USER/<ensemble>*
+du -sh /bp1/geog-tropical/users/$USER/DUMP2HOLD/um/<ensemble>*
 
 # Find large files
-find /mnt/storage/private/bridge/um_output/$USER/<ensemble>* -type f -size +1G
+find /bp1/geog-tropical/users/$USER/DUMP2HOLD/um/<ensemble>* -type f -size +1G
 ```
 
 ### Monitoring
@@ -807,7 +807,7 @@ for job in $(cat logs/<ensemble>_ids.log); do
 done
 
 # Monitor disk usage over time
-watch -n 60 "du -sh /mnt/storage/private/bridge/um_output/$USER/<ensemble>*"
+watch -n 60 "du -sh /bp1/geog-tropical/users/$USER/DUMP2HOLD/um/<ensemble>*"
 ```
 
 ### Batch Operations
