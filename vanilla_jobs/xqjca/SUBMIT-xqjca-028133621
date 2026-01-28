@@ -3,8 +3,21 @@
 # on UNIX. 
 . /etc/profile
 [ "$UMDIR" ] || . $HOME/.profile
-. $UMDIR/setvars_4.5
-SUBMITID=:::submitid:::                   # defines the job directory
+if [ -f $UMDIR/setvars_4.5 ]
+then
+	. $UMDIR/setvars_4.5
+elif [ -f $HOME/setvars_4.5 ] 
+then 
+	. $HOME/setvars_4.5 
+elif [ -f $HOME/setvars ] 
+then 
+	. $HOME/setvars 
+else 
+	echo "Error in SUBMIT: failed to find suitable setvars" 1>&2 
+	exit 1 
+fi
+#
+SUBMITID=028133621                   # defines the job directory
 export SUBMITID                           # just in case someone uses it
 export RUNID=xqjca
 JOBDIR=$HOME/umui_runs/$RUNID-$SUBMITID
@@ -28,24 +41,24 @@ export JOBDIR
 #  # STEP=4  skips compilation.
 #  # STEP=99 Reconfiguration only
 TYPE=NRUN 		# Indicates run type-CRUN is continuation
-STEP=4     # First step of main script to run (A)
+STEP=0     # First step of main script to run (A)
 #
 ###################################################
 # Queue details for NRUN and compilation only run #
 ###################################################
 # Applies to STEP=0 or 2
 COMPILE_TIME_STEPS2_AND_0=-1 # -1 requests maximum
-NRUN_TIME_LIMIT=43200           # Applies to STEP!=0
-QUEUE_NRUN=normal
+NRUN_TIME_LIMIT=1:00:00
+QUEUE_NRUN=test
 ###################################################
 # Queue details for CRUN and resubmission runs    #
 ###################################################
-QUEUE_CRUN=normal
-CRUN_TIME_LIMIT=43200
+QUEUE_CRUN=test
+CRUN_TIME_LIMIT=1:00:00
 ###################################################
 # Other queue details                             #
 ###################################################
-MEMORY=60Mw
+MEMORY=175Gb
 CJOBN=xqjca000
 ###################################################
 # Details for second machine if ROVING            #
@@ -53,13 +66,13 @@ CJOBN=xqjca000
 ###################################################
 # Account ID                                      #
 ###################################################
-ACCOUNT=
+ACCOUNT=geog003722
 ###################################################
 # Number of processors for model run              #
 ###################################################
 # Processor decomposition for MPP.
 # Atmos, wave or coupled. N-S by E-W
-NMPPN=4           # N-S decomposition
+NMPPN=6           # N-S decomposition
 NMPPE=4           # E-W decomposition
 ###################################################
 # Rebuild all missing section-defs combinations.  #
@@ -232,7 +245,7 @@ cat >>/tmp/qsubmit.$thisHost.$$<<EOF
 $QSUB_TIME
 # QSUB -lM $MEMORY
 
-trap "ja -eSt" 0
+
 
 EOF
 elif test $STEP -eq 1 || test $STEP -eq 4 # Run, or compilation and run
@@ -245,7 +258,7 @@ if test "$ROVING" = true; then
 # QSUB -l mpp_t=$RUN_TIME_LIMIT2
 # QSUB -l mpp_p=$NQS_PE_REQ2
 
-trap "ja -eSt" 0
+
 EOF
 
 fi
@@ -254,7 +267,7 @@ cat >>/tmp/qsubmit.$thisHost.$$<<EOF
 # QSUB -l mpp_t=$RUN_TIME_LIMIT
 # QSUB -l mpp_p=$NQS_PE_REQ
 
-trap "ja -eSt" 0
+
 EOF
 fi
 
@@ -262,7 +275,7 @@ fi
 
 # First add all variables for use in NRUNs and CRUNs
 cat >/tmp/qsubmitvars1.$$<<EOF
-set -a            # Set jobscript UNICOS options
+. $HOME/.profile;set -a            # Set jobscript UNICOS options
 SETOPT=a          # Choose shell "set" options for  lower level scripts
 TYPE=$TYPE
 STEP=$FULL_STEP
@@ -292,6 +305,7 @@ UM_ATM_NPROCX=$NMPPE2
 UM_ATM_NPROCY=$NMPPN2
 UM_OCN_NPROCX=1
 UM_OCN_NPROCY=$UM_NPES2
+CRUN_TIME_LIMIT=1:00:00
 
 . $JOBDIR/SCRIPT
 EOF
@@ -306,6 +320,7 @@ UM_ATM_NPROCX=$NMPPE
 UM_ATM_NPROCY=$NMPPN
 UM_OCN_NPROCX=1
 UM_OCN_NPROCY=$UM_NPES
+CRUN_TIME_LIMIT=1:00:00
 if test \$STEP = 2; then
   . $JOBDIR/SCRIPT_compile
 else
@@ -330,15 +345,15 @@ fi
 if test $TYPE = 'NRUN'
 then
 # Jobname is in qsubmit file
-qsubCmd1="qsub -x -o $OUTPUT_FILE -s /bin/ksh $JOBDIR/qsubmit.$thisHost"
+qsubCmd1="/bp1/geog-tropical/um/bin/qsub-um -o $OUTPUT_FILE -s /bin/ksh $JOBDIR/qsubmit.$thisHost"
 if test "$ROVING" = true; then
-  qsubCmd2="qsub -x -o $OUTPUT_FILE -s /bin/ksh $JOBDIR/qsubmit.$otherHost"
+  qsubCmd2="/bp1/geog-tropical/um/bin/qsub-um -o $OUTPUT_FILE -s /bin/ksh $JOBDIR/qsubmit.$otherHost"
 fi
 else
 # Supply jobname for first run.
-qsubCmd1="qsub -x -o $OUTPUT_FILE -r $CJOBN -s /bin/ksh $JOBDIR/qsubmit.$thisHost"
+qsubCmd1="/bp1/geog-tropical/um/bin/qsub-um -o $OUTPUT_FILE -r $CJOBN -s /bin/ksh $JOBDIR/qsubmit.$thisHost"
 if test "$ROVING" = true; then
-  qsubCmd2="qsub -x -o $OUTPUT_FILE -r $CJOBN -s /bin/ksh $JOBDIR/qsubmit.$otherHost"
+  qsubCmd2="/bp1/geog-tropical/um/bin/qsub-um -o $OUTPUT_FILE -r $CJOBN -s /bin/ksh $JOBDIR/qsubmit.$otherHost"
 fi
 fi
 if test $STEP -eq 4 -a "$ROVING" = true; then

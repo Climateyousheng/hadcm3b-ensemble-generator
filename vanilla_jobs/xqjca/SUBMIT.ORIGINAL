@@ -28,7 +28,7 @@ export JOBDIR
 #  # STEP=4  skips compilation.
 #  # STEP=99 Reconfiguration only
 TYPE=NRUN 		# Indicates run type-CRUN is continuation
-STEP=4     # First step of main script to run (A)
+STEP=0     # First step of main script to run (A)
 #
 ###################################################
 # Queue details for NRUN and compilation only run #
