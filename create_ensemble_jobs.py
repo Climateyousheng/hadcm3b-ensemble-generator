@@ -46,6 +46,9 @@ def main(vanilla_job, parameter_file, ensemble_exp, singleJob=False):
 
     num_records = len(json_data)
 
+    # Convert vanilla_job path to absolute path to avoid issues with os.chdir in duplicate_job
+    vanilla_job = os.path.abspath(vanilla_job)
+
     # Prepare to log generated ensemble IDs and parameters to disk
     updated_params_data = []
 
