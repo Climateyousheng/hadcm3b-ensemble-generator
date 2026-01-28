@@ -89,8 +89,10 @@ def perturb_list(defaults, key, new_bl_param):
     elif key == "LAI_MIN":
         perturbed_list[0] = new_bl_param
         perturbed_list[1] = new_bl_param
-    elif key == "R_GROW" or key == "V_CRIT_ALPHA":
+    elif key == "R_GROW":
         perturbed_list = [new_bl_param for _ in perturbed_list]
+    elif key == "V_CRIT_ALPHA":
+        perturbed_list = [new_bl_param]  # Single value (not per-PFT)
     elif key == "TLOW" or key == "TUPP":
         perturbed_list = [default + new_bl_param for default in perturbed_list]
 

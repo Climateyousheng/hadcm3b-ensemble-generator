@@ -26,7 +26,7 @@ default_params = {
     "R_GROW": [0.25, 0.25, 0.25, 0.25, 0.25],
     "TLOW": [0.0, -5.0, 0.0, 13.0, 0.0],
     "TUPP": [36.0, 31.0, 36.0, 45.0, 36.0],
-    "V_CRIT_ALPHA": [0.343],
+    "V_CRIT_ALPHA": [0.343],  # Single value (not per-PFT)
 }
 
 
@@ -55,9 +55,13 @@ def perturb_list(defaults, key, new_bl_param):
         perturbed_list[0] = new_bl_param
         perturbed_list[1] = new_bl_param
 
-    elif key in ["R_GROW", "V_CRIT_ALPHA"]:
+    elif key == "R_GROW":
         # Apply same value to all PFTs
         perturbed_list = [new_bl_param for _ in perturbed_list]
+
+    elif key == "V_CRIT_ALPHA":
+        # Single value parameter (not per-PFT)
+        perturbed_list = [new_bl_param]
 
     elif key in ["TLOW", "TUPP"]:
         # Add delta to all PFT defaults
