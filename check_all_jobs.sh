@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# File containing the experiment IDs
-# logfile="./logs/xqab.log"
+# File containing the experiment IDs (one job ID per line)
+# Use the *_generated_ids_*.log file, NOT the *_ensemble_jobs_generator_*.log file
 # logfile="./logs/xqap_generated_ids_20240907.log"
 # logfile="./logs/xqaq_generated_ids_20240908.log"
 # logfile="./logs/xqar_generated_ids_20240908.log"
-logfile="./logs/xqjc_ensemble_jobs_generator_20260128.log"
+logfile="./logs/xqjc_generated_ids_20260128.log"
 
 # Loop through each line in the log file
 user_name=$(whoami)
