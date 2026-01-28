@@ -78,24 +78,29 @@ def expand_bl_params_to_pfts(bl_params, defaults=default_params):
 
     Returns:
         Dictionary with full PFT arrays for all parameters
+        (in the same order as defaults for consistency)
     """
+    # Create expanded_params in the same order as defaults
+    # This ensures consistent parameter ordering in output JSON
     expanded_params = {}
 
-    for key, bl_value in bl_params.items():
+    # First pass: process all parameters in defaults order
+    for key in defaults:
+        if key in bl_params:
+            # Use the provided BL parameter
+            expanded_params[key] = perturb_list(defaults[key], key, bl_params[key])
+        else:
+            # Use default value
+            expanded_params[key] = defaults[key].copy()
+
+    # Special case: Co-vary TLOW and TUPP
+    if "TLOW" in bl_params and "TUPP" not in bl_params:
+        expanded_params["TUPP"] = perturb_list(defaults["TUPP"], "TUPP", bl_params["TLOW"])
+
+    # Warn about any parameters in bl_params that don't exist in defaults
+    for key in bl_params:
         if key not in defaults:
             print(f"Warning: '{key}' not found in defaults, skipping")
-            continue
-
-        expanded_params[key] = perturb_list(defaults[key], key, bl_value)
-
-        # Co-vary TLOW and TUPP
-        if key == "TLOW" and "TUPP" not in bl_params:
-            expanded_params["TUPP"] = perturb_list(defaults["TUPP"], "TUPP", bl_value)
-
-    # Add any parameters not specified (keep at defaults)
-    for key in defaults:
-        if key not in expanded_params:
-            expanded_params[key] = defaults[key].copy()
 
     return expanded_params
 
