@@ -5,7 +5,7 @@
 # logfile="./logs/xqap_generated_ids_20240907.log"
 # logfile="./logs/xqaq_generated_ids_20240908.log"
 # logfile="./logs/xqar_generated_ids_20240908.log"
-logfile="./logs/xqau_generated_ids_20240909.log"
+logfile="./logs/xqjc_ensemble_jobs_generator_20260128.log"
 
 # Loop through each line in the log file
 user_name=$(whoami)
