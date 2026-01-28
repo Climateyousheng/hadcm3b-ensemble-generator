@@ -7,6 +7,10 @@ Input CSV format:
   candidate_2,0.08,0.004,0.90,4.0,0.050,0.25,0.0,0.343
   ...
 
+Note: Parameter names are normalized automatically:
+  - V_CRIT or VCRIT → V_CRIT_ALPHA
+  - Case-insensitive (vcrit, V_Crit, etc. all work)
+
 Output: JSON file compatible with create_ensemble_jobs.py
 """
 
@@ -17,6 +21,35 @@ from pathlib import Path
 
 # Import the BL expansion logic
 from expand_bl_to_pfts import expand_bl_params_to_pfts, default_params
+
+
+# Parameter name mappings (CSV column name -> internal parameter name)
+PARAMETER_NAME_MAP = {
+    'V_CRIT': 'V_CRIT_ALPHA',
+    'VCRIT': 'V_CRIT_ALPHA',
+    'V_CRIT_ALPHA': 'V_CRIT_ALPHA',
+    # Add more mappings as needed
+}
+
+
+def normalize_parameter_name(param_name):
+    """
+    Normalize parameter name to match internal naming convention.
+
+    Args:
+        param_name: Parameter name from CSV header
+
+    Returns:
+        Normalized parameter name
+    """
+    param_name = param_name.strip().upper()
+
+    # Check if mapping exists
+    if param_name in PARAMETER_NAME_MAP:
+        return PARAMETER_NAME_MAP[param_name]
+
+    # Return as-is if no mapping found
+    return param_name
 
 
 def read_csv_candidates(csv_file):
@@ -32,6 +65,7 @@ def read_csv_candidates(csv_file):
         List of dictionaries with BL parameter values
     """
     candidates = []
+    name_mappings_logged = set()  # Track which mappings we've already logged
 
     with open(csv_file, 'r') as f:
         reader = csv.DictReader(f)
@@ -51,11 +85,19 @@ def read_csv_candidates(csv_file):
                 if not value:
                     continue
 
+                # Normalize parameter name
+                normalized_key = normalize_parameter_name(key)
+
+                # Log parameter name mapping (only once per unique mapping)
+                if normalized_key != key.strip().upper() and key not in name_mappings_logged:
+                    print(f"  Note: Mapping '{key}' → '{normalized_key}'")
+                    name_mappings_logged.add(key)
+
                 # Convert to float
                 try:
-                    candidate[key] = float(value)
+                    candidate[normalized_key] = float(value)
                 except ValueError:
-                    print(f"Warning: Could not convert '{value}' to float for key '{key}'")
+                    print(f"Warning: Could not convert '{value}' to float for key '{key}' (normalized: {normalized_key})")
                     continue
 
             if candidate:

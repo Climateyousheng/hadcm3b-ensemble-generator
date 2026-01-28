@@ -1,3 +1,6 @@
+# CSV template for BL candidate parameters
+# Note: V_CRIT_ALPHA can also be written as V_CRIT (will be mapped automatically)
+# Note: TLOW values are DELTAS (shift from default), not absolute values
 candidate_id,ALPHA,G_AREA,F0,LAI_MIN,NL0,R_GROW,TLOW,V_CRIT_ALPHA
 candidate_1,0.10,0.005,0.880,3.5,0.055,0.20,2.5,0.5
 candidate_2,0.08,0.004,0.875,4.0,0.050,0.25,0.0,0.343
