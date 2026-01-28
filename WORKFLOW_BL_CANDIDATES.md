@@ -81,7 +81,7 @@ rsync -avz -e 'ssh -J <username>@login.archer2.ac.uk' \
 cd ~/scripts/hadcm3b-ensemble-generator
 
 # Submit compilation (replace <JOBID> with your job ID)
-clustersubmit -s y -r bp14 vanilla_jobs/<JOBID>
+clustersubmit -s y -r bp14 -P geog003722 vanilla_jobs/<JOBID>
 
 # Monitor compilation
 qstat -u $USER
@@ -269,7 +269,7 @@ done < "$LOGFILE"
 # Submit all jobs
 while IFS= read -r job_id; do
     echo "Submitting: $job_id"
-    clustersubmit -s y -c n -a y -r bp14 -q compute "$job_id"
+    clustersubmit -s y -c n -a y -r bp14 -q compute -P geog003722 "$job_id"
 done < "$LOGFILE"
 
 # Options explained:

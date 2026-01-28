@@ -124,7 +124,7 @@ case $SUBMIT_OPTION in
         SUBMITTED=0
         while IFS= read -r job_id; do
             echo "  Submitting: $job_id"
-            clustersubmit -s y -c n -a y -r bp14 -q compute "$job_id"
+            clustersubmit -s y -c n -a y -r bp14 -q compute -P geog003722 "$job_id"
             SUBMITTED=$((SUBMITTED + 1))
         done < "$GENERATED_IDS_LOG"
 
@@ -142,7 +142,7 @@ logfile="$GENERATED_IDS_LOG"
 
 while IFS= read -r experiment_id; do
     echo "Submitting: \$experiment_id"
-    clustersubmit -s y -c n -a y -r bp14 -q compute "\$experiment_id"
+    clustersubmit -s y -c n -a y -r bp14 -q compute -P geog003722 "\$experiment_id"
 done < "\$logfile"
 EOF
         chmod +x "$SUBMIT_SCRIPT"

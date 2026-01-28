@@ -13,5 +13,5 @@ logfile="./logs/xqau_generated_ids_20240909.log"
 while IFS= read -r experiment_id
 do
   # Run the command with the current experiment ID
-  clustersubmit -s y -c y -a y -r bp14 -q compute "$experiment_id"
+  clustersubmit -s y -c y -a y -r bp14 -q compute -P geog003722 "$experiment_id"
 done < "$logfile"

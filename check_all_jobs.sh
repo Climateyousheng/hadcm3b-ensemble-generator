@@ -16,6 +16,6 @@ do
     echo "Files exist in $data_dir"
   else
     echo "clustersubmit $experiment_id"
-    clustersubmit -s y -c n -a y -r bp14 -q compute "$experiment_id"
+    clustersubmit -s y -c n -a y -r bp14 -q compute -P geog003722 "$experiment_id"
   fi
 done < "$logfile"
