@@ -141,7 +141,7 @@ check_progress() {
                 " "${jobs_dir}/${job_name}/CNTLATM"
 
                 echo "submitting job for step ${step}"
-                clustersubmit -s y -c n -a y -r bc4 -q cpu -w 14-00:00:00 ${job_name}
+                clustersubmit -s y -c n -a y -r bp14 -q compute ${job_name}
             fi
         fi
         return 1

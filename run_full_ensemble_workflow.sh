@@ -20,7 +20,7 @@ VANILLA_JOB=$2
 USER_NAME=$(whoami)
 
 # Paths
-REPO_DIR="$HOME/hadcm3b-ensemble-generator"
+REPO_DIR="$HOME/scripts/hadcm3b-ensemble-generator"
 PARAM_FILE="$REPO_DIR/param_tables/${ENSEMBLE_NAME}.json"
 VANILLA_PATH="$REPO_DIR/vanilla_jobs/$VANILLA_JOB"
 LOG_DIR="$REPO_DIR/logs"
@@ -124,7 +124,7 @@ case $SUBMIT_OPTION in
         SUBMITTED=0
         while IFS= read -r job_id; do
             echo "  Submitting: $job_id"
-            clustersubmit -s y -c n -a y -r bc4 -q cpu -w 12:00:00 "$job_id"
+            clustersubmit -s y -c n -a y -r bp14 -q compute "$job_id"
             SUBMITTED=$((SUBMITTED + 1))
         done < "$GENERATED_IDS_LOG"
 
@@ -142,7 +142,7 @@ logfile="$GENERATED_IDS_LOG"
 
 while IFS= read -r experiment_id; do
     echo "Submitting: \$experiment_id"
-    clustersubmit -s y -c n -a y -r bc4 -q cpu -w 12:00:00 "\$experiment_id"
+    clustersubmit -s y -c n -a y -r bp14 -q compute "\$experiment_id"
 done < "\$logfile"
 EOF
         chmod +x "$SUBMIT_SCRIPT"

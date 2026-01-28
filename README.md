@@ -65,7 +65,7 @@ cd hadcm3b-ensemble-generator
 # 3. Transfer and compile vanilla job
 rsync -avz -e 'ssh -J <user>@login.archer2.ac.uk' \
   <user>@puma2:~/umui_jobs/<JOBID> vanilla_jobs/
-clustersubmit -s y -r bc4 vanilla_jobs/<JOBID>
+clustersubmit -s y -r bp14 vanilla_jobs/<JOBID>
 
 # 4. Generate parameter sets (choose one method)
 python create_param_table_random.py     # Random exploration
@@ -307,16 +307,16 @@ umui
 # From BC4
 rsync -avz -e 'ssh -J <username>@login.archer2.ac.uk' \
   <username>@puma2:~/umui_jobs/<JOBID> \
-  ~/hadcm3b-ensemble-generator/vanilla_jobs/
+  ~/scripts/hadcm3b-ensemble-generator/vanilla_jobs/
 ```
 
 #### Step 3: Compile Vanilla Job
 
 ```bash
-cd ~/hadcm3b-ensemble-generator
+cd ~/scripts/hadcm3b-ensemble-generator
 
 # Submit compilation
-clustersubmit -s y -r bc4 vanilla_jobs/<JOBID>
+clustersubmit -s y -r bp14 vanilla_jobs/<JOBID>
 
 # Monitor: qstat -u $USER
 # Wait ~10-30 minutes
@@ -367,7 +367,7 @@ open param_tables/<ensemble_name>_param_distributions.pdf
 #### Option A: Automated Workflow (Recommended)
 
 ```bash
-cd ~/hadcm3b-ensemble-generator
+cd ~/scripts/hadcm3b-ensemble-generator
 
 ./run_full_ensemble_workflow.sh <ensemble_name> <vanilla_job_id>
 
@@ -427,7 +427,7 @@ done < "$LOGFILE"
 
 ```bash
 while IFS= read -r job_id; do
-    clustersubmit -s y -c n -a y -r bc4 -q cpu -w 12:00:00 "$job_id"
+    clustersubmit -s y -c n -a y -r bp14 -q compute "$job_id"
 done < "$LOGFILE"
 ```
 
@@ -817,7 +817,7 @@ watch -n 60 "du -sh /mnt/storage/private/bridge/um_output/$USER/<ensemble>*"
 for job in $(cat logs/<ensemble>_ids.log); do
     if ! qstat -f $job 2>/dev/null | grep -q "Exit_status = 0"; then
         echo "Resubmitting: $job"
-        clustersubmit -s y -c y -a y -r bc4 -q veryshort -w 6:00:00 "$job"
+        clustersubmit -s y -c y -a y -r bp14 -q compute "$job"
     fi
 done
 

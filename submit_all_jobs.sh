@@ -8,5 +8,5 @@ logfile="./logs/XqArn_generated_ids_20241028.log"
 while IFS= read -r experiment_id
 do
   # Run the command with the current experiment ID
-  clustersubmit -s y -c n -a y -r bc4 -q cpu -w 12:00:00 "$experiment_id"
+  clustersubmit -s y -c n -a y -r bp14 -q compute "$experiment_id"
 done < "$logfile"

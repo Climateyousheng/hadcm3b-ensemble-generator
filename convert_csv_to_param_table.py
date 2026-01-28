@@ -221,7 +221,7 @@ def main():
         print(f"\n1. Review the generated file: {args.output_file}")
         print(f"\n2. Create ensemble jobs:")
         print(f"   python create_ensemble_jobs.py \\")
-        print(f"     --vanilla_job ~/hadcm3b-ensemble-generator/vanilla_jobs/<JOBID> \\")
+        print(f"     --vanilla_job ~/scripts/hadcm3b-ensemble-generator/vanilla_jobs/<JOBID> \\")
         print(f"     --parameter_file {args.output_file} \\")
         print(f"     --ensemble_exp {args.ensemble_name}")
         print(f"\n3. Set up storage directories and submit jobs")

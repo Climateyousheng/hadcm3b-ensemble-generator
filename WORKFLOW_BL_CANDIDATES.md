@@ -61,7 +61,7 @@ umui
 
 ```bash
 # From BC4 login node
-cd ~/hadcm3b-ensemble-generator
+cd ~/scripts/hadcm3b-ensemble-generator
 
 # Copy vanilla job to template directory
 rsync -avz -e 'ssh -J <username>@login.archer2.ac.uk' \
@@ -78,10 +78,10 @@ rsync -avz -e 'ssh -J <username>@login.archer2.ac.uk' \
 
 ```bash
 # On BC4
-cd ~/hadcm3b-ensemble-generator
+cd ~/scripts/hadcm3b-ensemble-generator
 
 # Submit compilation (replace <JOBID> with your job ID)
-clustersubmit -s y -r bc4 vanilla_jobs/<JOBID>
+clustersubmit -s y -r bp14 vanilla_jobs/<JOBID>
 
 # Monitor compilation
 qstat -u $USER
@@ -154,13 +154,13 @@ nano input_params/my_candidates.csv
 # Or: vi, emacs, or transfer to local machine for Excel editing
 
 # If editing locally, transfer back to BC4:
-# scp my_candidates.csv <username>@bc4login.acrc.bris.ac.uk:~/hadcm3b-ensemble-generator/input_params/
+# scp my_candidates.csv <username>@bc4login.acrc.bris.ac.uk:~/scripts/hadcm3b-ensemble-generator/input_params/
 ```
 
 ### 2.3 Convert CSV to Parameter Table
 
 ```bash
-cd ~/hadcm3b-ensemble-generator
+cd ~/scripts/hadcm3b-ensemble-generator
 
 # Set variables
 ENSEMBLE_NAME="xqabc"  # Choose your ensemble name (4 chars)
@@ -197,7 +197,7 @@ grep -c '"ALPHA"' param_tables/$ENSEMBLE_NAME.json
 ### Option A: Automated Workflow (Recommended)
 
 ```bash
-cd ~/hadcm3b-ensemble-generator
+cd ~/scripts/hadcm3b-ensemble-generator
 
 # Run complete workflow
 ./run_full_ensemble_workflow.sh <ensemble_name> <vanilla_job_id>
@@ -226,7 +226,7 @@ cd ~/hadcm3b-ensemble-generator
 #### 3.1 Generate Ensemble Jobs
 
 ```bash
-cd ~/hadcm3b-ensemble-generator
+cd ~/scripts/hadcm3b-ensemble-generator
 
 ENSEMBLE_NAME="xqabc"
 VANILLA_JOB="xqaba"
@@ -269,7 +269,7 @@ done < "$LOGFILE"
 # Submit all jobs
 while IFS= read -r job_id; do
     echo "Submitting: $job_id"
-    clustersubmit -s y -c n -a y -r bc4 -q cpu -w 12:00:00 "$job_id"
+    clustersubmit -s y -c n -a y -r bp14 -q compute "$job_id"
 done < "$LOGFILE"
 
 # Options explained:
@@ -431,7 +431,7 @@ ls -la /mnt/storage/private/bridge/um_output/$USER/
 
 ```bash
 # 1. Setup (one-time)
-cd ~/hadcm3b-ensemble-generator
+cd ~/scripts/hadcm3b-ensemble-generator
 # ... create vanilla job in UMUI ...
 # ... transfer and compile ...
 
