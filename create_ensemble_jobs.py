@@ -101,8 +101,10 @@ def main(vanilla_job, parameter_file, ensemble_exp, singleJob=False):
             logger.info(f"{expid}: Setting {key} to {value_str}")
 
             # Replace whole line in namelist
+            # Use ^ to match at start of line (with optional leading spaces)
+            # This prevents "ALPHA=" from matching "V_CRIT_ALPHA="
             subprocess.run(
-                ["sed", "-i", f"s|{key}=.*|{key}={value_str}|", original_file],
+                ["sed", "-i", f"s|^ *{key}=.*|{key}={value_str}|", original_file],
                 check=True,
             )
 
